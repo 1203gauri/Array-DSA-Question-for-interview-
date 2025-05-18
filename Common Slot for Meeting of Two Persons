@@ -1,0 +1,47 @@
+You are given two lists of availability time slots, slt1[][] and slt2[][], for two people. Each slot is represented as [start, end], and it is guaranteed that within each list, no two slots overlap (i.e., for any two intervals, either start1>end2 or start2>end1).
+Given a meeting duration d, return the earliest common time slot of length at least d. If no such slot exists, return an empty array.
+
+Examples:
+
+Input: slt1[][] = [[10,50], [60,120], [140,210]], slt2[][] = [[0,15], [60,70]], d = 8
+Output: [60,68]
+Explanation: The only overlap is [60,70] (10 minutes), which is enough for an 8-minute meeting, so answer is [60,68]
+
+Input: slt1[][] = [[10,50], [60,120], [140,210]], slt2[][] = [[0,15], [60,70]], d = 12
+Output: []
+Explanation: The only overlap is [60, 70] (10 minutes), but 12 minutes are needed, so no valid slot exists.
+
+
+SOLUTION #JAVA :
+
+
+import java.util.*;
+import java.io.*;
+
+class solution {
+    public int[] commonSlot(int[][] slt1, int[][] slt2, int d) {
+        
+        
+        Arrays.sort(slt1, (x, y) -> Integer.compare(x[0], y[0]));
+        Arrays.sort(slt2, (x, y) -> Integer.compare(x[0], y[0]));
+        
+        int p1 = 0, p2 = 0;
+        while (p1 < slt1.length && p2 < slt2.length) {
+          
+            int left = Math.max(slt1[p1][0], slt2[p2][0]);
+            int right = Math.min(slt1[p1][1], slt2[p2][1]);
+            if (right - left >= d) {
+                return new int[]{left, left + d};
+            }
+            
+          
+            if (slt1[p1][1] < slt2[p2][1])
+                p1++;
+            else
+                p2++;
+        }
+        
+      
+        return new int[0]; 
+    }
+}
